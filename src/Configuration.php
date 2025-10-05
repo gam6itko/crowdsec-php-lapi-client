@@ -104,6 +104,8 @@ class Configuration extends AbstractConfiguration
      * @return void
      *
      * @throws \InvalidArgumentException
+     *
+     * @psalm-suppress UndefinedMethod
      */
     private function addAppSecNodes($rootNode)
     {
@@ -122,6 +124,8 @@ class Configuration extends AbstractConfiguration
      * @return void
      *
      * @throws \InvalidArgumentException
+     *
+     * @psalm-suppress UndefinedMethod
      */
     private function addConnectionNodes($rootNode)
     {
