@@ -50,4 +50,9 @@ class Constants extends CommonConstants
      * @var string The current version of this library
      */
     public const VERSION = 'v3.6.0';
+
+    /**
+     * @var string Push alerts to API
+     */
+    public const ALERTS_PUSH = '/v1/alerts/push';
 }
