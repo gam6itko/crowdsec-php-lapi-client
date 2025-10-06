@@ -32,5 +32,10 @@
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeParentInterface::scalarNode"/>
             </errorLevel>
         </UndefinedInterfaceMethod>
+        <UndefinedMethod>
+            <errorLevel type="info">
+                <directory name="src/Configuration"/>
+            </errorLevel>
+        </UndefinedMethod>
     </issueHandlers>
 </psalm>

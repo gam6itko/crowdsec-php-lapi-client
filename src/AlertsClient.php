@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CrowdSec\LapiClient\Client;
-
-use CrowdSec\LapiClient\Constants;
+namespace CrowdSec\LapiClient;
 
 /**
  * @psalm-import-type TAlert from \CrowdSec\LapiClient\Configuration\Alert
