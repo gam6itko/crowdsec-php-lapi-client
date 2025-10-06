@@ -1,12 +1,14 @@
 <?php
 
-namespace CrowdSec\LapiClient;
+namespace CrowdSec\LapiClient\Configuration\Client;
 
 use CrowdSec\Common\Client\AbstractClient;
 use CrowdSec\Common\Client\ClientException as CommonClientException;
 use CrowdSec\Common\Client\RequestHandler\RequestHandlerInterface;
 use CrowdSec\Common\Client\TimeoutException as CommonTimeoutException;
-use CrowdSec\LapiClient\Client\TClientConfig;
+use CrowdSec\LapiClient\ClientException;
+use CrowdSec\LapiClient\Configuration;
+use CrowdSec\LapiClient\Constants;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\Definition\Processor;
 
@@ -21,9 +23,6 @@ abstract class AbstractLapiClient extends AbstractClient
      */
     private $headers;
 
-    /**
-     * @param TClientConfig $configs
-     */
     public function __construct(
         array $configs,
         ?RequestHandlerInterface $requestHandler = null,
