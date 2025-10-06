@@ -2,9 +2,10 @@
 
 namespace CrowdSec\LapiClient\Payload;
 
-use CrowdSec\LapiClient\Configuration\Alert\Decisions;
-use CrowdSec\LapiClient\Configuration\Alert\Events;
-use CrowdSec\LapiClient\Configuration\Alert\Metas;
+use CrowdSec\Common\Configuration\AbstractConfiguration;
+use CrowdSec\LapiClient\Configuration\Alert\Decision;
+use CrowdSec\LapiClient\Configuration\Alert\Event;
+use CrowdSec\LapiClient\Configuration\Alert\Meta;
 use CrowdSec\LapiClient\Configuration\Alert\Source;
 use Symfony\Component\Config\Definition\Processor;
 
@@ -40,7 +41,7 @@ class Alert
     /**
      * @var list<TMeta>
      */
-    private $metas = [];
+    private $metaList = [];
 
     /**
      * @var list<string>
@@ -70,7 +71,7 @@ class Alert
         $this->configureDecisions($processor, $decisions);
         $this->configureEvents($processor, $events);
         $this->configureMetas($processor, $metaList);
-        $this->configureLabels($processor, $labels);
+        $this->labels = \array_filter($labels);
     }
 
     public function toArray(): array
@@ -85,8 +86,8 @@ class Alert
         if (null !== $this->source) {
             $result['source'] = $this->source;
         }
-        if ([] !== $this->metas) {
-            $result['metas'] = $this->metas;
+        if ([] !== $this->metaList) {
+            $result['meta'] = $this->metaList;
         }
         if ([] !== $this->labels) {
             $result['labels'] = $this->labels;
@@ -112,25 +113,26 @@ class Alert
 
     private function configureDecisions(Processor $processor, array $list): void
     {
-        $configuration = new Decisions();
-        $this->decisions = $processor->processConfiguration($configuration, [$configuration->cleanConfigs($list)]);
+        $this->decisions = $this->handleList($processor, new Decision(), $list);
     }
 
     private function configureEvents(Processor $processor, array $list): void
     {
-        $configuration = new Events();
-        $this->events = $processor->processConfiguration($configuration, [$configuration->cleanConfigs($list)]);
+        $this->events = $this->handleList($processor, new Event(), $list);
     }
 
-    private function configureMetas(Processor $processor, array $metas): void
+    private function configureMetas(Processor $processor, array $list): void
     {
-        $configuration = new Metas();
-        $this->metas = $processor->processConfiguration($configuration, [$configuration->cleanConfigs($metas)]);
+        $this->metaList = $this->handleList($processor, new Meta(), $list);
     }
 
-    private function configureLabels(Processor $processor, array $labels)
+    private function handleList(Processor $processor, AbstractConfiguration $param, array $list): array
     {
-        $configuration = new \CrowdSec\LapiClient\Configuration\Alert\Labels();
-        $this->labels = $processor->processConfiguration($configuration, [$labels]);
+        $result = [];
+        foreach ($list as $item) {
+            $result[] = $processor->processConfiguration($param, [$param->cleanConfigs($item)]);
+        }
+        return $result;
     }
+
 }

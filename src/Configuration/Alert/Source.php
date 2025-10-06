@@ -9,13 +9,13 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
  * @psalm-type TSource = array{
  *     scope: string,
  *     value: string,
- *     ip: string,
- *     range: string,
- *     as_number: string,
- *     as_name: string,
- *     cn: string,
- *     latitude: float,
- *     longitude: float
+ *     ip?: string,
+ *     range?: string,
+ *     as_number?: string,
+ *     as_name?: string,
+ *     cn?: string,
+ *     latitude?: float,
+ *     longitude?: float
  * }
  */
 class Source extends AbstractConfiguration
@@ -43,13 +43,13 @@ class Source extends AbstractConfiguration
             ->children()
                 ->stringNode('scope')->isRequired()->cannotBeEmpty()->end()
                 ->stringNode('value')->isRequired()->cannotBeEmpty()->end()
-                ->stringNode('ip')->isRequired()->cannotBeEmpty()->end()
-                ->stringNode('range')->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('as_number')->isRequired()->cannotBeEmpty()->end()
-                ->stringNode('as_name')->isRequired()->cannotBeEmpty()->end()
-                ->stringNode('cn')->isRequired()->cannotBeEmpty()->end()
-                ->floatNode('latitude')->isRequired()->min(-90)->max(90)->end()
-                ->floatNode('longitude')->isRequired()->min(-180)->max(180)->end()
+                ->stringNode('ip')->cannotBeEmpty()->end()
+                ->stringNode('range')->cannotBeEmpty()->end()
+                ->scalarNode('as_number')->cannotBeEmpty()->end()
+                ->stringNode('as_name')->cannotBeEmpty()->end()
+                ->stringNode('cn')->cannotBeEmpty()->end()
+                ->floatNode('latitude')->min(-90)->max(90)->end()
+                ->floatNode('longitude')->min(-180)->max(180)->end()
             ->end()
         ;
         //@formatter:on

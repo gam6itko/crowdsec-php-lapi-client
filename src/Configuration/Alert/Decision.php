@@ -12,11 +12,11 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
  *     scope: string,
  *     value: string,
  *     duration: string,
- *     until: string,
+ *     until?: string,
  *     scenario: string
  * }
  */
-class Decisions extends AbstractConfiguration
+class Decision extends AbstractConfiguration
 {
     /** @var list<string> The list of each configuration tree key */
     protected $keys = [
@@ -31,21 +31,19 @@ class Decisions extends AbstractConfiguration
 
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('decisions');
+        $treeBuilder = new TreeBuilder('decision');
         $rootNode = $treeBuilder->getRootNode();
 
         //@formatter:off
         $rootNode
-            ->arrayPrototype()
-                ->children()
-                    ->stringNode('origin')->isRequired()->cannotBeEmpty()->end()
-                    ->stringNode('type')->isRequired()->cannotBeEmpty()->end()
-                    ->stringNode('scope')->isRequired()->cannotBeEmpty()->end()
-                    ->stringNode('value')->isRequired()->cannotBeEmpty()->end()
-                    ->stringNode('duration')->isRequired()->cannotBeEmpty()->end()
-                    ->stringNode('until')->isRequired()->cannotBeEmpty()->end()
-                    ->stringNode('scenario')->isRequired()->cannotBeEmpty()->end()
-                ->end()
+            ->children()
+                ->stringNode('origin')->isRequired()->cannotBeEmpty()->end()
+                ->stringNode('type')->isRequired()->cannotBeEmpty()->end()
+                ->stringNode('scope')->isRequired()->cannotBeEmpty()->end()
+                ->stringNode('value')->isRequired()->cannotBeEmpty()->end()
+                ->stringNode('duration')->isRequired()->cannotBeEmpty()->end()
+                ->stringNode('until')->cannotBeEmpty()->end()
+                ->stringNode('scenario')->isRequired()->cannotBeEmpty()->end()
             ->end()
         ;
         //@formatter:on
