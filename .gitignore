@@ -8,3 +8,4 @@ composer-dev*
 
 #log
 *.log
+/.phpunit.result.cache
