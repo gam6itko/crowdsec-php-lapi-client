@@ -1,6 +1,6 @@
 <?php
 
-namespace CrowdSec\LapiClient\Configuration\Client;
+namespace CrowdSec\LapiClient\Client;
 
 use CrowdSec\Common\Client\AbstractClient;
 use CrowdSec\Common\Client\ClientException as CommonClientException;
@@ -8,6 +8,7 @@ use CrowdSec\Common\Client\RequestHandler\RequestHandlerInterface;
 use CrowdSec\Common\Client\TimeoutException as CommonTimeoutException;
 use CrowdSec\LapiClient\ClientException;
 use CrowdSec\LapiClient\Configuration;
+use CrowdSec\LapiClient\Configuration\Client\TimeoutException;
 use CrowdSec\LapiClient\Constants;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\Definition\Processor;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CrowdSec\LapiClient\Configuration\Client;
+namespace CrowdSec\LapiClient\Client;
 
 use CrowdSec\LapiClient\Constants;
 
@@ -13,6 +13,7 @@ class AlertsClient extends AbstractLapiClient
 {
     /**
      * @param list<TAlert> $alerts
+     * @return list<string>
      */
     public function pushAlerts(array $alerts): array
     {

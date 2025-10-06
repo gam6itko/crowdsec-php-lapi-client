@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CrowdSec\LapiClient;
 
-use CrowdSec\LapiClient\Configuration\Client\AbstractLapiClient;
+use CrowdSec\LapiClient\Client\AbstractLapiClient;
 
 /**
  * The Bouncer Client.
