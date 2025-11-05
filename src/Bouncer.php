@@ -14,10 +14,11 @@ namespace CrowdSec\LapiClient;
  * @copyright Copyright (c) 2022+ CrowdSec
  * @license   MIT License
  *
- * @psalm-import-type TMetric from Metrics
- * @psalm-import-type TOS     from Metrics
- * @psalm-import-type TMeta   from Metrics
- * @psalm-import-type TItem   from Metrics
+ * @psalm-import-type TMetric       from \CrowdSec\LapiClient\Configuration\Metrics
+ * @psalm-import-type TOS           from \CrowdSec\LapiClient\Configuration\Metrics
+ * @psalm-import-type TMeta         from \CrowdSec\LapiClient\Configuration\Metrics\Meta
+ * @psalm-import-type TItem         from \CrowdSec\LapiClient\Configuration\Metrics\Items
+ * @psalm-import-type TClientConfig from \CrowdSec\LapiClient\Configuration
  */
 class Bouncer extends AbstractLapiClient
 {
