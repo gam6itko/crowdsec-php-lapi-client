@@ -140,7 +140,7 @@ class Bouncer extends AbstractLapiClient
      */
     public function getStreamDecisions(
         bool $startup,
-        array $filter = [],
+        array $filter = []
     ): array {
         return $this->manageRequest(
             'GET',
