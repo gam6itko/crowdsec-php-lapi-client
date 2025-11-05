@@ -17,27 +17,27 @@ namespace CrowdSec\LapiClient\Tests\Unit;
 
 use CrowdSec\Common\Client\ClientException;
 use CrowdSec\Common\Client\HttpMessage\Response;
-use CrowdSec\LapiClient\Bouncer;
+use CrowdSec\LapiClient\BouncerClient;
 use CrowdSec\LapiClient\Constants;
 use CrowdSec\LapiClient\Tests\Constants as TestConstants;
 use CrowdSec\LapiClient\Tests\MockedData;
 use CrowdSec\LapiClient\Tests\PHPUnitUtil;
 
 /**
- * @covers \CrowdSec\LapiClient\Bouncer::__construct
- * @covers \CrowdSec\LapiClient\Bouncer::configure
- * @covers \CrowdSec\LapiClient\Bouncer::manageRequest
- * @covers \CrowdSec\LapiClient\Bouncer::getStreamDecisions
- * @covers \CrowdSec\LapiClient\Bouncer::getFilteredDecisions
- * @covers \CrowdSec\LapiClient\Bouncer::getAppSecDecision
- * @covers \CrowdSec\LapiClient\Bouncer::manageAppSecRequest
- * @covers \CrowdSec\LapiClient\Bouncer::formatUserAgent
+ * @covers \CrowdSec\LapiClient\BouncerClient::__construct
+ * @covers \CrowdSec\LapiClient\BouncerClient::configure
+ * @covers \CrowdSec\LapiClient\BouncerClient::manageRequest
+ * @covers \CrowdSec\LapiClient\BouncerClient::getStreamDecisions
+ * @covers \CrowdSec\LapiClient\BouncerClient::getFilteredDecisions
+ * @covers \CrowdSec\LapiClient\BouncerClient::getAppSecDecision
+ * @covers \CrowdSec\LapiClient\BouncerClient::manageAppSecRequest
+ * @covers \CrowdSec\LapiClient\BouncerClient::formatUserAgent
  * @covers \CrowdSec\LapiClient\Configuration::getConfigTreeBuilder
  * @covers \CrowdSec\LapiClient\Configuration::addConnectionNodes
  * @covers \CrowdSec\LapiClient\Configuration::addAppSecNodes
  * @covers \CrowdSec\LapiClient\Configuration::validate
- * @covers \CrowdSec\LapiClient\Bouncer::buildUsageMetrics
- * @covers \CrowdSec\LapiClient\Bouncer::getOs
+ * @covers \CrowdSec\LapiClient\BouncerClient::buildUsageMetrics
+ * @covers \CrowdSec\LapiClient\BouncerClient::getOs
  * @covers \CrowdSec\LapiClient\Configuration\Metrics::getConfigTreeBuilder
  * @covers \CrowdSec\LapiClient\Configuration\Metrics\Items::cleanConfigs
  * @covers \CrowdSec\LapiClient\Configuration\Metrics\Items::getConfigTreeBuilder
@@ -48,14 +48,14 @@ use CrowdSec\LapiClient\Tests\PHPUnitUtil;
  * @covers \CrowdSec\LapiClient\Metrics::configureProperties
  * @covers \CrowdSec\LapiClient\Metrics::toArray
  *
- * @uses \CrowdSec\LapiClient\Bouncer::cleanHeadersForLog
- * @uses \CrowdSec\LapiClient\Bouncer::cleanRawBodyForLog()
+ * @uses \CrowdSec\LapiClient\BouncerClient::cleanHeadersForLog
+ * @uses \CrowdSec\LapiClient\BouncerClient::cleanRawBodyForLog()
  */
 final class BouncerTest extends AbstractClient
 {
     public function testDecisionsStreamParams()
     {
-        $mockClient = $this->getMockBuilder('CrowdSec\LapiClient\Bouncer')
+        $mockClient = $this->getMockBuilder('CrowdSec\LapiClient\BouncerClient')
             ->enableOriginalConstructor()
             ->setConstructorArgs(['configs' => $this->configs])
             ->onlyMethods(['request'])
@@ -79,7 +79,7 @@ final class BouncerTest extends AbstractClient
 
     public function testFilteredDecisionsParams()
     {
-        $mockClient = $this->getMockBuilder('CrowdSec\LapiClient\Bouncer')
+        $mockClient = $this->getMockBuilder('CrowdSec\LapiClient\BouncerClient')
             ->enableOriginalConstructor()
             ->setConstructorArgs(['configs' => $this->configs])
             ->onlyMethods(['request'])
@@ -106,7 +106,7 @@ final class BouncerTest extends AbstractClient
         $osName = php_uname('s');
         $osVersion = php_uname('v');
 
-        $client = new Bouncer($this->configs);
+        $client = new BouncerClient($this->configs);
         // Test 1: basic
         $properties = [
             'name' => 'test',
@@ -259,7 +259,7 @@ final class BouncerTest extends AbstractClient
 
     public function testAppSecDecisionParams()
     {
-        $mockClient = $this->getMockBuilder('CrowdSec\LapiClient\Bouncer')
+        $mockClient = $this->getMockBuilder('CrowdSec\LapiClient\BouncerClient')
             ->enableOriginalConstructor()
             ->setConstructorArgs(['configs' => $this->configs])
             ->onlyMethods(['requestAppSec'])
@@ -287,7 +287,7 @@ final class BouncerTest extends AbstractClient
 
         $mockCurl = $this->getCurlMock(['handle']);
 
-        $mockClient = $this->getMockBuilder('CrowdSec\LapiClient\Bouncer')
+        $mockClient = $this->getMockBuilder('CrowdSec\LapiClient\BouncerClient')
             ->enableOriginalConstructor()
             ->setConstructorArgs([
                 'configs' => $this->configs,
@@ -342,7 +342,7 @@ final class BouncerTest extends AbstractClient
 
         $mockCurl = $this->getCurlMock(['handle']);
 
-        $mockClient = $this->getMockBuilder('CrowdSec\LapiClient\Bouncer')
+        $mockClient = $this->getMockBuilder('CrowdSec\LapiClient\BouncerClient')
             ->enableOriginalConstructor()
             ->setConstructorArgs([
                 'configs' => $this->configs,
@@ -393,7 +393,7 @@ final class BouncerTest extends AbstractClient
 
     public function testConfigure()
     {
-        $client = new Bouncer($this->configs);
+        $client = new BouncerClient($this->configs);
         // url
         $this->assertEquals(
             Constants::DEFAULT_LAPI_URL,
@@ -438,7 +438,7 @@ final class BouncerTest extends AbstractClient
         );
         $error = '';
         try {
-            new Bouncer(['user_agent_suffix' => 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa']);
+            new BouncerClient(['user_agent_suffix' => 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa']);
         } catch (\Exception $e) {
             $error = $e->getMessage();
         }
@@ -452,7 +452,7 @@ final class BouncerTest extends AbstractClient
 
         $error = '';
         try {
-            new Bouncer(['api_url' => '']);
+            new BouncerClient(['api_url' => '']);
         } catch (\Exception $e) {
             $error = $e->getMessage();
         }
@@ -466,7 +466,7 @@ final class BouncerTest extends AbstractClient
 
         $error = '';
         try {
-            new Bouncer(['api_key' => TestConstants::API_KEY, 'user_agent_suffix' => 'aaaaa  a']);
+            new BouncerClient(['api_key' => TestConstants::API_KEY, 'user_agent_suffix' => 'aaaaa  a']);
         } catch (\Exception $e) {
             $error = $e->getMessage();
         }
@@ -478,7 +478,7 @@ final class BouncerTest extends AbstractClient
             'user_agent_suffix should contain allowed chars'
         );
 
-        $client = new Bouncer(['api_key' => TestConstants::API_KEY, 'user_agent_suffix' => '']);
+        $client = new BouncerClient(['api_key' => TestConstants::API_KEY, 'user_agent_suffix' => '']);
 
         $this->assertEquals(
             '',
@@ -486,7 +486,7 @@ final class BouncerTest extends AbstractClient
             'user_agent_suffix can be empty'
         );
         // user agent version
-        $client = new Bouncer(['api_key' => '1111', 'user_agent_version' => 'v4.56.7']);
+        $client = new BouncerClient(['api_key' => '1111', 'user_agent_version' => 'v4.56.7']);
 
         $this->assertEquals(
             'v4.56.7',
@@ -496,7 +496,7 @@ final class BouncerTest extends AbstractClient
 
         $error = '';
         try {
-            new Bouncer(['api_key' => TestConstants::API_KEY, 'user_agent_version' => '']);
+            new BouncerClient(['api_key' => TestConstants::API_KEY, 'user_agent_version' => '']);
         } catch (\Exception $e) {
             $error = $e->getMessage();
         }
@@ -511,7 +511,7 @@ final class BouncerTest extends AbstractClient
         // auth type
         $error = '';
         try {
-            new Bouncer(['auth_type' => 'custom']);
+            new BouncerClient(['auth_type' => 'custom']);
         } catch (\Exception $e) {
             $error = $e->getMessage();
         }
@@ -525,7 +525,7 @@ final class BouncerTest extends AbstractClient
         // api _key
         $error = '';
         try {
-            new Bouncer([]);
+            new BouncerClient([]);
         } catch (\Exception $e) {
             $error = $e->getMessage();
         }
@@ -539,7 +539,7 @@ final class BouncerTest extends AbstractClient
         // tls conf
         $error = '';
         try {
-            new Bouncer(['auth_type' => Constants::AUTH_TLS]);
+            new BouncerClient(['auth_type' => Constants::AUTH_TLS]);
         } catch (\Exception $e) {
             $error = $e->getMessage();
         }
@@ -553,7 +553,7 @@ final class BouncerTest extends AbstractClient
 
         $error = '';
         try {
-            new Bouncer(['auth_type' => Constants::AUTH_TLS, 'tls_cert_path' => 'test', 'tls_key_path' => 'test', 'tls_verify_peer' => true]);
+            new BouncerClient(['auth_type' => Constants::AUTH_TLS, 'tls_cert_path' => 'test', 'tls_key_path' => 'test', 'tls_verify_peer' => true]);
         } catch (\Exception $e) {
             $error = $e->getMessage();
         }
@@ -565,7 +565,7 @@ final class BouncerTest extends AbstractClient
             'CA cert path should be required if verify peer is true'
         );
         // Unexpected conf
-        $client = new Bouncer(['api_key' => '1111', 'user_agent_version' => 'v4.56.7', 'unexpected' => true]);
+        $client = new BouncerClient(['api_key' => '1111', 'user_agent_version' => 'v4.56.7', 'unexpected' => true]);
 
         $this->assertEquals(
             'v4.56.7',

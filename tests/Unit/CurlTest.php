@@ -15,26 +15,26 @@ namespace CrowdSec\LapiClient\Tests\Unit;
  * @license   MIT License
  */
 
-use CrowdSec\LapiClient\Bouncer;
+use CrowdSec\LapiClient\BouncerClient;
 use CrowdSec\LapiClient\Tests\MockedData;
 use CrowdSec\LapiClient\TimeoutException;
 
 /**
  * @uses \CrowdSec\LapiClient\Configuration::getConfigTreeBuilder
- * @uses \CrowdSec\LapiClient\Bouncer::__construct
- * @uses \CrowdSec\LapiClient\Bouncer::configure
- * @uses \CrowdSec\LapiClient\Bouncer::formatUserAgent
+ * @uses \CrowdSec\LapiClient\BouncerClient::__construct
+ * @uses \CrowdSec\LapiClient\BouncerClient::configure
+ * @uses \CrowdSec\LapiClient\BouncerClient::formatUserAgent
  * @uses \CrowdSec\LapiClient\Configuration::addConnectionNodes
  * @uses \CrowdSec\LapiClient\Configuration::validate
  * @uses \CrowdSec\LapiClient\Configuration::addAppSecNodes
- * @uses \CrowdSec\LapiClient\Bouncer::cleanHeadersForLog
- * @uses \CrowdSec\LapiClient\Bouncer::cleanRawBodyForLog()
+ * @uses \CrowdSec\LapiClient\BouncerClient::cleanHeadersForLog
+ * @uses \CrowdSec\LapiClient\BouncerClient::cleanRawBodyForLog()
  *
- * @covers \CrowdSec\LapiClient\Bouncer::getStreamDecisions
- * @covers \CrowdSec\LapiClient\Bouncer::getFilteredDecisions
- * @covers \CrowdSec\LapiClient\Bouncer::manageRequest
- * @covers \CrowdSec\LapiClient\Bouncer::getAppSecDecision
- * @covers \CrowdSec\LapiClient\Bouncer::manageAppSecRequest
+ * @covers \CrowdSec\LapiClient\BouncerClient::getStreamDecisions
+ * @covers \CrowdSec\LapiClient\BouncerClient::getFilteredDecisions
+ * @covers \CrowdSec\LapiClient\BouncerClient::manageRequest
+ * @covers \CrowdSec\LapiClient\BouncerClient::getAppSecDecision
+ * @covers \CrowdSec\LapiClient\BouncerClient::manageAppSecRequest
  */
 final class CurlTest extends AbstractClient
 {
@@ -48,7 +48,7 @@ final class CurlTest extends AbstractClient
         $mockCurlRequest->method('getResponseHttpCode')->willReturn(
             MockedData::HTTP_200
         );
-        $client = new Bouncer($this->configs, $mockCurlRequest);
+        $client = new BouncerClient($this->configs, $mockCurlRequest);
         $decisionsResponse = $client->getStreamDecisions(true);
 
         $this->assertEquals(
@@ -68,7 +68,7 @@ final class CurlTest extends AbstractClient
         $mockCurlRequest->method('getResponseHttpCode')->willReturn(
             MockedData::HTTP_200
         );
-        $client = new Bouncer($this->configs, $mockCurlRequest);
+        $client = new BouncerClient($this->configs, $mockCurlRequest);
         $decisionsResponse = $client->getFilteredDecisions();
 
         $this->assertEquals(
@@ -88,7 +88,7 @@ final class CurlTest extends AbstractClient
         $mockCurlRequest->method('getResponseHttpCode')->willReturn(
             MockedData::HTTP_200
         );
-        $client = new Bouncer($this->configs, $mockCurlRequest);
+        $client = new BouncerClient($this->configs, $mockCurlRequest);
         $headers = [
             'X-Crowdsec-Appsec-Ip' => 'test-value',
             'X-Crowdsec-Appsec-Host' => 'test-value',
@@ -114,7 +114,7 @@ final class CurlTest extends AbstractClient
         $mockCurlRequest->method('errno')->willReturn(\CURLE_OPERATION_TIMEOUTED);
         $mockCurlRequest->method('error')->willReturn('Operation timed out');
 
-        $client = new Bouncer($this->configs, $mockCurlRequest);
+        $client = new BouncerClient($this->configs, $mockCurlRequest);
         $headers = [
             'X-Crowdsec-Appsec-Ip' => 'test-value',
             'X-Crowdsec-Appsec-Host' => 'test-value',
@@ -154,7 +154,7 @@ final class CurlTest extends AbstractClient
         $mockCurlRequest->method('errno')->willReturn(\CURLE_OPERATION_TIMEOUTED);
         $mockCurlRequest->method('error')->willReturn('Operation timed out');
 
-        $client = new Bouncer($this->configs, $mockCurlRequest);
+        $client = new BouncerClient($this->configs, $mockCurlRequest);
 
         $error = false;
         $message = '';

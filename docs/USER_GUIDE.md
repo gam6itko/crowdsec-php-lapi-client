@@ -97,7 +97,7 @@ To instantiate a bouncer client, you have to:
   `crowdsec/common` dependency package.
 
 ```php
-use CrowdSec\LapiClient\Bouncer;
+use CrowdSec\LapiClient\BouncerClient;
 use Crowdsec\LapiClient\Storage\FileStorage;
 
 $configs = [
@@ -106,7 +106,7 @@ $configs = [
     'appsec_url' => 'https://your-crowdsec-app-sec-url:7422',
     'api_key' => '**************************',
 ];
-$client = new Bouncer($configs);
+$client = new BouncerClient($configs);
 ````
 
 #### LAPI calls
@@ -449,7 +449,7 @@ class CustomRequestHandler implements RequestHandlerInterface
 Once you have your custom request handler, you can instantiate the bouncer that will use it:
 
 ```php
-use CrowdSec\LapiClient\Bouncer;
+use CrowdSec\LapiClient\BouncerClient;
 use CustomRequestHandler;
 
 $requestHandler = new CustomRequestHandler();
@@ -466,7 +466,7 @@ This client comes with a `file_get_contents` request handler that you can use in
 handler. To use it, you should instantiate it and pass the created object as a parameter:
 
 ```php
-use CrowdSec\LapiClient\Bouncer;
+use CrowdSec\LapiClient\BouncerClient;
 use CrowdSec\Common\Client\RequestHandler\FileGetContents;
 
 $requestHandler = new FileGetContents($configs);

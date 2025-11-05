@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use CrowdSec\Common\Logger\ConsoleLog;
-use CrowdSec\LapiClient\Bouncer;
+use CrowdSec\LapiClient\BouncerClient;
 use CrowdSec\LapiClient\Constants;
 
 $startup = isset($argv[1]) ? (bool) $argv[1] : false;
@@ -31,7 +31,7 @@ $apiKeyConfigs = [
     'api_key' => $bouncerKey,
 ];
 $logger = new ConsoleLog();
-$client = new Bouncer($apiKeyConfigs, null, $logger);
+$client = new BouncerClient($apiKeyConfigs, null, $logger);
 echo 'Bouncer instantiated' . \PHP_EOL;
 
 echo 'Calling ' . $client->getConfig('api_url') . ' for decisions stream ...' . \PHP_EOL;

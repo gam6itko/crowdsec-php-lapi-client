@@ -15,7 +15,7 @@ namespace CrowdSec\LapiClient\Tests\Integration;
 
 use CrowdSec\Common\Client\AbstractClient;
 use CrowdSec\Common\Client\RequestHandler\FileGetContents;
-use CrowdSec\LapiClient\Bouncer;
+use CrowdSec\LapiClient\BouncerClient;
 use CrowdSec\LapiClient\Constants;
 use CrowdSec\LapiClient\Tests\Constants as TestConstants;
 use CrowdSec\LapiClient\Tests\PHPUnitUtil;
@@ -25,7 +25,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @coversNothing
  */
-final class BouncerTest extends TestCase
+final class BouncerClientTest extends TestCase
 {
     /**
      * @var array
@@ -84,10 +84,10 @@ final class BouncerTest extends TestCase
     public function testDecisionsStream($requestHandler)
     {
         if ('FileGetContents' === $requestHandler) {
-            $client = new Bouncer($this->configs, new FileGetContents($this->configs));
+            $client = new BouncerClient($this->configs, new FileGetContents($this->configs));
         } else {
             // Curl by default
-            $client = new Bouncer($this->configs);
+            $client = new BouncerClient($this->configs);
         }
         if ($this->useTls) {
             $this->assertEquals(Constants::AUTH_TLS, $this->configs['auth_type']);
@@ -144,10 +144,10 @@ final class BouncerTest extends TestCase
     public function testPushUsageMetrics($requestHandler)
     {
         if ('FileGetContents' === $requestHandler) {
-            $client = new Bouncer($this->configs, new FileGetContents($this->configs));
+            $client = new BouncerClient($this->configs, new FileGetContents($this->configs));
         } else {
             // Curl by default
-            $client = new Bouncer($this->configs);
+            $client = new BouncerClient($this->configs);
         }
         if ($this->useTls) {
             $this->assertEquals(Constants::AUTH_TLS, $this->configs['auth_type']);
@@ -201,10 +201,10 @@ final class BouncerTest extends TestCase
     public function testFilteredDecisions($requestHandler)
     {
         if ('FileGetContents' === $requestHandler) {
-            $client = new Bouncer($this->configs, new FileGetContents($this->configs));
+            $client = new BouncerClient($this->configs, new FileGetContents($this->configs));
         } else {
             // Curl by default
-            $client = new Bouncer($this->configs);
+            $client = new BouncerClient($this->configs);
         }
         if ($this->useTls) {
             $this->assertEquals(Constants::AUTH_TLS, $this->configs['auth_type']);
@@ -248,10 +248,10 @@ final class BouncerTest extends TestCase
             $this->fail('BOUNCER_KEY is not set');
         }
         if ('FileGetContents' === $requestHandler) {
-            $client = new Bouncer($this->configs, new FileGetContents($this->configs));
+            $client = new BouncerClient($this->configs, new FileGetContents($this->configs));
         } else {
             // Curl by default
-            $client = new Bouncer($this->configs);
+            $client = new BouncerClient($this->configs);
         }
         if ($this->useTls) {
             $this->assertEquals(Constants::AUTH_TLS, $this->configs['auth_type']);
@@ -306,10 +306,10 @@ final class BouncerTest extends TestCase
             $this->fail('BOUNCER_KEY is not set');
         }
         if ('FileGetContents' === $requestHandler) {
-            $client = new Bouncer($this->configs, new FileGetContents($this->configs));
+            $client = new BouncerClient($this->configs, new FileGetContents($this->configs));
         } else {
             // Curl by default
-            $client = new Bouncer($this->configs);
+            $client = new BouncerClient($this->configs);
         }
         $this->checkRequestHandler($client, $requestHandler);
 

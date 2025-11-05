@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 use CrowdSec\Common\Client\RequestHandler\FileGetContents;
-use CrowdSec\LapiClient\Bouncer;
+use CrowdSec\LapiClient\BouncerClient;
 
 $filter = isset($argv[1]) ? json_decode($argv[1], true) : [];
 $bouncerKey = $argv[2] ?? false;
@@ -29,7 +29,7 @@ $apiKeyConfigs = [
     'api_url' => $lapiUrl,
     'api_key' => $bouncerKey,
 ];
-$client = new Bouncer($apiKeyConfigs, $customRequestHandler);
+$client = new BouncerClient($apiKeyConfigs, $customRequestHandler);
 echo 'Bouncer instantiated' . \PHP_EOL;
 
 echo 'Calling ' . $client->getConfig('api_url') . ' for decisions ...' . \PHP_EOL;
