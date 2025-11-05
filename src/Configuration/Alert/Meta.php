@@ -24,13 +24,13 @@ class Meta extends AbstractConfiguration
         $treeBuilder = new TreeBuilder('meta');
         $root = $treeBuilder->getRootNode();
 
-        //@formatter:off
+        // @formatter:off
         $root
             ->children()
                 ->scalarNode('key')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('value')->isRequired()->cannotBeEmpty()->end()
             ->end();
-        //@formatter:on
+        // @formatter:on
 
         return $treeBuilder;
     }

@@ -14,7 +14,7 @@ class AlertTest extends TestCase
     {
         $alert = new Alert(
             $in ?? [],
-                $in['source'] ?? null,
+            $in['source'] ?? null,
             $in['decisions'] ?? [],
             $in['events'] ?? [],
             $in['meta'] ?? [],

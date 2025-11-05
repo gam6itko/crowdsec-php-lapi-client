@@ -11,6 +11,7 @@ class AlertsClient extends AbstractLapiClient
 {
     /**
      * @param list<TAlert> $alerts
+     *
      * @return list<string>
      */
     public function pushAlerts(array $alerts): array

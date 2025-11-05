@@ -23,7 +23,7 @@ abstract class AbstractLapiClient extends AbstractClient
     public function __construct(
         array $configs,
         ?RequestHandlerInterface $requestHandler = null,
-        ?LoggerInterface $logger = null
+        ?LoggerInterface $logger = null,
     ) {
         $this->configure($configs);
         $this->headers = [Constants::HEADER_LAPI_USER_AGENT => $this->formatUserAgent($this->configs)];
@@ -51,7 +51,7 @@ abstract class AbstractLapiClient extends AbstractClient
     protected function manageRequest(
         string $method,
         string $endpoint,
-        array $parameters = []
+        array $parameters = [],
     ): array {
         try {
             $this->logger->debug('Now processing a bouncer request', [
@@ -77,7 +77,7 @@ abstract class AbstractLapiClient extends AbstractClient
     protected function manageAppSecRequest(
         string $method,
         array $headers = [],
-        string $rawBody = ''
+        string $rawBody = '',
     ): array {
         try {
             $this->logger->debug('Now processing a bouncer AppSec request', [

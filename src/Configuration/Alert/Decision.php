@@ -34,7 +34,7 @@ class Decision extends AbstractConfiguration
         $treeBuilder = new TreeBuilder('decision');
         $rootNode = $treeBuilder->getRootNode();
 
-        //@formatter:off
+        // @formatter:off
         $rootNode
             ->children()
                 ->stringNode('origin')->isRequired()->cannotBeEmpty()->end()
@@ -46,7 +46,7 @@ class Decision extends AbstractConfiguration
                 ->stringNode('scenario')->isRequired()->cannotBeEmpty()->end()
             ->end()
         ;
-        //@formatter:on
+        // @formatter:on
 
         return $treeBuilder;
     }

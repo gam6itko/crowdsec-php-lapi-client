@@ -46,7 +46,7 @@ class Alert extends AbstractConfiguration
         /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
 
-        //@formatter:off
+        // @formatter:off
         $rootNode
             ->children()
                 ->stringNode('scenario')->isRequired()->cannotBeEmpty()->end()
@@ -62,9 +62,8 @@ class Alert extends AbstractConfiguration
                 ->booleanNode('remediation')->isRequired()->end()
             ->end()
         ;
-        //@formatter:on
+        // @formatter:on
 
         return $treeBuilder;
     }
 }
-

@@ -49,7 +49,7 @@ class WatcherClient extends AbstractClient
     private function manageRequest(
         string $method,
         string $endpoint,
-        array $parameters = []
+        array $parameters = [],
     ): array {
         $this->logger->debug('', [
             'type' => 'WATCHER_CLIENT_REQUEST',
@@ -142,7 +142,7 @@ class WatcherClient extends AbstractClient
         string $dateTimeDurationString,
         string $value,
         string $type,
-        string $scope = Constants::SCOPE_IP
+        string $scope = Constants::SCOPE_IP,
     ) {
         $stopAt = (clone $now)->modify($dateTimeDurationString)->format('Y-m-d\TH:i:s.000\Z');
         $startAt = $now->format('Y-m-d\TH:i:s.000\Z');

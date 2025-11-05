@@ -38,7 +38,7 @@ class Source extends AbstractConfiguration
         $treeBuilder = new TreeBuilder('source');
         $rootNode = $treeBuilder->getRootNode();
 
-        //@formatter:off
+        // @formatter:off
         $rootNode
             ->children()
                 ->stringNode('scope')->isRequired()->cannotBeEmpty()->end()
@@ -52,7 +52,7 @@ class Source extends AbstractConfiguration
                 ->floatNode('longitude')->min(-180)->max(180)->end()
             ->end()
         ;
-        //@formatter:on
+        // @formatter:on
 
         return $treeBuilder;
     }

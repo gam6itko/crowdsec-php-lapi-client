@@ -26,7 +26,7 @@ class Event extends AbstractConfiguration
         $treeBuilder = new TreeBuilder('event');
         $rootNode = $treeBuilder->getRootNode();
 
-        //@formatter:off
+        // @formatter:off
         $rootNode
             ->children()
                 ->arrayNode('meta')->isRequired()
@@ -40,7 +40,7 @@ class Event extends AbstractConfiguration
                 ->scalarNode('timestamp')->isRequired()->cannotBeEmpty()->end()
             ->end()
         ;
-        //@formatter:on
+        // @formatter:on
 
         return $treeBuilder;
     }

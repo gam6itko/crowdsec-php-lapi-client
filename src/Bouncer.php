@@ -40,14 +40,12 @@ class Bouncer extends AbstractLapiClient
      *            'version' => (string) OS version
      *        ]
      *    ];
-     *
      * @param TMeta $meta Array containing meta data.
      *
      *    $meta = [
      *        'window_size_seconds' => (integer) Window size in seconds
      *        'utc_now_timestamp' => (integer) Current timestamp
      *    ];
-     *
      * @param list<TItem|array> $items Array of items. Each item is an array too.
      *
      *    $items = [
@@ -142,7 +140,7 @@ class Bouncer extends AbstractLapiClient
      */
     public function getStreamDecisions(
         bool $startup,
-        array $filter = []
+        array $filter = [],
     ): array {
         return $this->manageRequest(
             'GET',
