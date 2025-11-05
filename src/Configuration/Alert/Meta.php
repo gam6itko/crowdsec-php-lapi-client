@@ -1,0 +1,37 @@
+<?php
+
+namespace CrowdSec\LapiClient\Configuration\Alert;
+
+use CrowdSec\Common\Configuration\AbstractConfiguration;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+
+/**
+ * @psalm-type TMeta = array{
+ *     key: string,
+ *     value: string
+ * }
+ */
+class Meta extends AbstractConfiguration
+{
+    /** @var list<string> The list of each configuration tree key */
+    protected $keys = [
+        'key',
+        'value',
+    ];
+
+    public function getConfigTreeBuilder(): TreeBuilder
+    {
+        $treeBuilder = new TreeBuilder('meta');
+        $root = $treeBuilder->getRootNode();
+
+        //@formatter:off
+        $root
+            ->children()
+                ->scalarNode('key')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('value')->isRequired()->cannotBeEmpty()->end()
+            ->end();
+        //@formatter:on
+
+        return $treeBuilder;
+    }
+}

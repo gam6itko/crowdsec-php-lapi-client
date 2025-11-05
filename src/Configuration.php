@@ -19,7 +19,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
  * @copyright Copyright (c) 2022+ CrowdSec
  * @license   MIT License
  *
- * @psalm-type TBouncerConfig = array{
+ * @psalm-type TClientConfig = array{
  *     user_agent_suffix: string,
  *     user_agent_version: string,
  *     api_url?: string,
