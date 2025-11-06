@@ -8,7 +8,6 @@ use CrowdSec\LapiClient\AlertsClient;
 use CrowdSec\LapiClient\Constants;
 use CrowdSec\LapiClient\Payload\Alert;
 use CrowdSec\LapiClient\Storage\TokenStorage;
-use CrowdSec\LapiClient\Storage\TokenStorageInterface;
 use CrowdSec\LapiClient\Tests\Constants as TestConstants;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
@@ -75,15 +74,18 @@ final class AlertsClientTest extends TestCase
      */
     public function testPush(): array
     {
+        $now = new \DateTimeImmutable();
         $alertFull = new Alert(
             [
-                'scenario' => 'test/http-max',
+                'scenario' => 'crowdsec-lapi-test/integration',
                 'scenario_hash' => 'abc123',
                 'scenario_version' => '1.0',
                 'message' => 'Message1',
                 'events_count' => 3,
-                'start_at' => '2025-01-01T00:00:00Z',
-                'stop_at' => '2025-01-01T00:10:00Z',
+                'start_at' => $now->format('Y-m-d H:i:s'),
+                'stop_at' => $now
+                    ->add(new \DateInterval('PT4H'))
+                    ->format('Y-m-d H:i:s'),
                 'capacity' => 10,
                 'leakspeed' => '10/1s',
                 'simulated' => false,
@@ -107,9 +109,10 @@ final class AlertsClientTest extends TestCase
                     'meta' => [
                         ['key' => 'path', 'value' => '/admin'],
                     ],
-                    'timestamp' => '2025-01-01T00:00:01Z',
+                    'timestamp' => $now->format('Y-m-d H:i:s'),
                 ],
             ],
+            // decisions
             [
                 [
                     'origin' => 'lapi',
@@ -117,8 +120,10 @@ final class AlertsClientTest extends TestCase
                     'scope' => 'ip',
                     'value' => '1.2.3.4',
                     'duration' => '4h',
-                    'until' => '2025-01-01T04:00:00Z',
-                    'scenario' => 'crowdsecurity/http-probing',
+                    'until' => $now
+                        ->add(new \DateInterval('PT4H'))
+                        ->format('Y-m-d H:i:s'),
+                    'scenario' => 'crowdsec-lapi-test/integration',
                 ],
             ],
             [
@@ -128,7 +133,7 @@ final class AlertsClientTest extends TestCase
         );
         $alertLite = new Alert(
             [
-                'scenario' => 'test/http-min',
+                'scenario' => 'crowdsec-lapi-test/integration',
                 'scenario_hash' => 'xyz777',
                 'scenario_version' => '1.0',
                 'message' => 'Message2',
@@ -158,7 +163,7 @@ final class AlertsClientTest extends TestCase
                     'meta' => [
                         ['key' => 'path', 'value' => '/admin'],
                     ],
-                    'timestamp' => '2025-01-01T00:00:01Z',
+                    'timestamp' => $now->format('Y-m-d H:i:s'),
                 ],
             ]
         );
@@ -184,9 +189,38 @@ final class AlertsClientTest extends TestCase
 
     public static function searchProvider(): iterable
     {
-        yield [
+        yield 'empty' => [
             [],
             2
+        ];
+
+        yield 'ip - no' => [
+            ['ip' => '19.17.11.7'],
+            0
+        ];
+
+        yield 'ip - 1' => [
+            ['ip' => '1.2.3.4'],
+            1
+        ];
+
+        yield 'scenario' => [
+            ['scenario' => 'crowdsec-lapi-test/integration'],
+            2
+        ];
+
+        yield 'scope - ip' => [
+            ['scope' => 'ip'],
+            2,
+        ];
+
+        yield 'scope - ip:1.2.3.4' => [
+            ['scope' => 'ip', 'value' => '1.2.3.4'],
+            2,
+        ];
+        yield 'has_active_decision' => [
+            ['has_active_decision' => true],
+            1,
         ];
     }
 }

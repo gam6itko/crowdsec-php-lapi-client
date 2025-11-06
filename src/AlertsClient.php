@@ -26,6 +26,18 @@ use Psr\Log\LoggerInterface;
  *     limit?: number,
  *     origin?: string
  * }
+ *
+ * @psalm-type TDeleteQuery = array{
+ *     scope?: string,
+ *     value?: string,
+ *     scenario?: string,
+ *     ip?: string,
+ *     range?: string,
+ *     since?: string,
+ *     until?: string,
+ *     has_active_decision?: boolean,
+ *     alert_source?: string
+ * }
  */
 class AlertsClient extends AbstractLapiClient
 {
@@ -55,7 +67,7 @@ class AlertsClient extends AbstractLapiClient
         $this->login();
         return $this->manageRequest(
             'POST',
-            Constants::ALERTS_PUSH,
+            Constants::ALERTS,
             $alerts
         );
     }
@@ -69,7 +81,22 @@ class AlertsClient extends AbstractLapiClient
         $this->login();
         return $this->manageRequest(
             'GET',
-            Constants::ALERTS_SEARCH,
+            Constants::ALERTS,
+            $query
+        );
+    }
+
+    /**
+     * Delete alerts by condition.
+     *
+     * @param TDeleteQuery $query
+     */
+    public function delete(array $query): array
+    {
+        $this->login();
+        return $this->manageRequest(
+            'DELETE',
+            Constants::ALERTS,
             $query
         );
     }
