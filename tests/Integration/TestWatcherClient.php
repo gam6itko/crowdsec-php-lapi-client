@@ -8,7 +8,7 @@ use CrowdSec\Common\Client\AbstractClient;
 use CrowdSec\LapiClient\ClientException;
 use CrowdSec\LapiClient\Constants;
 
-class WatcherClient extends AbstractClient
+class TestWatcherClient extends AbstractClient
 {
     public const WATCHER_LOGIN_ENDPOINT = '/v1/watchers/login';
 
@@ -49,7 +49,7 @@ class WatcherClient extends AbstractClient
     private function manageRequest(
         string $method,
         string $endpoint,
-        array $parameters = [],
+        array $parameters = []
     ): array {
         $this->logger->debug('', [
             'type' => 'WATCHER_CLIENT_REQUEST',
@@ -142,7 +142,7 @@ class WatcherClient extends AbstractClient
         string $dateTimeDurationString,
         string $value,
         string $type,
-        string $scope = Constants::SCOPE_IP,
+        string $scope = Constants::SCOPE_IP
     ) {
         $stopAt = (clone $now)->modify($dateTimeDurationString)->format('Y-m-d\TH:i:s.000\Z');
         $startAt = $now->format('Y-m-d\TH:i:s.000\Z');
@@ -160,8 +160,7 @@ class WatcherClient extends AbstractClient
                     'value' => $value,
                 ],
             ],
-            'events' => [
-            ],
+            'events' => [],
             'events_count' => 1,
             'labels' => null,
             'leakspeed' => '0',
