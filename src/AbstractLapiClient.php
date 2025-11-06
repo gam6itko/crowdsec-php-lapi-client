@@ -21,7 +21,7 @@ abstract class AbstractLapiClient extends AbstractClient
     /**
      * @var array
      */
-    private $headers;
+    protected $headers;
 
     public function __construct(
         array $configs,

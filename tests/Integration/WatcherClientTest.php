@@ -58,7 +58,7 @@ final class WatcherClientTest extends TestCase
         self::assertArrayHasKey('token', $data);
 
         self::assertSame(200, $data['code']);
-        self::assertMatchesRegularExpression('/\d{4}-\d{2}-\d{2}/', $data['expire']);
+        self::assertMatchesRegularExpression('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/', $data['expire']);
         // JWT
         $parts = explode('.', $data['token']);
         self::assertCount(3, $parts);

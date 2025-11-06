@@ -29,7 +29,7 @@ class Alert implements \JsonSerializable
     /**
      * @var list<TEvent>
      */
-    private $events = [];
+    private $events;
 
     /**
      * @var list<TDecision>
@@ -37,9 +37,9 @@ class Alert implements \JsonSerializable
     private $decisions = [];
 
     /**
-     * @var ?TSource
+     * @var TSource
      */
-    private $source = null;
+    private $source;
 
     /**
      * @var list<TMeta>
@@ -53,19 +53,19 @@ class Alert implements \JsonSerializable
 
     /**
      * @param TAlert $properties
-     * @param list<TDecision> $decisions
+     * @param TSource $source
      * @param list<TEvent> $events
-     * @param ?TSource $source
+     * @param list<TDecision> $decisions
      * @param list<TMeta> $metaList
      * @param list<string> $labels
      */
     public function __construct(
-        array  $properties,
-        ?array $source = null,
-        array  $decisions = [],
-        array  $events = [],
-        array  $metaList = [],
-        array  $labels = []
+        array $properties,
+        array $source,
+        array $events = [],
+        array $decisions = [],
+        array $metaList = [],
+        array $labels = []
     )
     {
         $processor = new Processor();

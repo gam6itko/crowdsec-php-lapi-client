@@ -38,13 +38,14 @@ final class TokenStorage implements TokenStorageInterface
         $ci = $this->cache->getItem('crowdsec_token');
         if (!$ci->isHit()) {
             $tokenInfo = $this->watcher->login($this->scenarios);
-            if (200 !== $tokenInfo['status']) {
+            if (200 !== $tokenInfo['code']) {
                 return null;
             }
             \assert(!empty($tokenInfo['token']));
             $ci
                 ->set($tokenInfo['token'])
-                ->expiresAt(new \DateTimeImmutable("@{$tokenInfo['expires']}"));
+                ->expiresAt(new \DateTime($tokenInfo['expire']));
+            $this->cache->save($ci);
         }
         return $ci->get();
     }
