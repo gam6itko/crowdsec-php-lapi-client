@@ -9,10 +9,13 @@ use CrowdSec\Common\Client\TimeoutException as CommonTimeoutException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\Definition\Processor;
 
+/**
+ * @psalm-import-type TClientConfig from Configuration
+ */
 abstract class AbstractLapiClient extends AbstractClient
 {
     /**
-     * @var array
+     * @var TClientConfig
      */
     protected $configs;
     /**
@@ -23,7 +26,7 @@ abstract class AbstractLapiClient extends AbstractClient
     public function __construct(
         array $configs,
         ?RequestHandlerInterface $requestHandler = null,
-        ?LoggerInterface $logger = null,
+        ?LoggerInterface $logger = null
     ) {
         $this->configure($configs);
         $this->headers = [Constants::HEADER_LAPI_USER_AGENT => $this->formatUserAgent($this->configs)];
@@ -51,7 +54,7 @@ abstract class AbstractLapiClient extends AbstractClient
     protected function manageRequest(
         string $method,
         string $endpoint,
-        array $parameters = [],
+        array $parameters = []
     ): array {
         try {
             $this->logger->debug('Now processing a bouncer request', [

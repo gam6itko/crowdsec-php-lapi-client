@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace CrowdSec\LapiClient;
 
+use CrowdSec\LapiClient\Configuration\Alert;
+
 /**
  * @psalm-import-type TAlert from \CrowdSec\LapiClient\Configuration\Alert
  */
 class AlertsClient extends AbstractLapiClient
 {
     /**
-     * @param list<TAlert> $alerts
+     * @param list<TAlert|Alert> $alerts
      *
      * @return list<string>
      */

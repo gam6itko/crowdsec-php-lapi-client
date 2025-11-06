@@ -34,6 +34,7 @@ class WatcherClient extends AbstractLapiClient
 
     /**
      * @throws ClientException
+     * @return TLoginResponse
      */
     public function login(array $scenarios = []): array
     {
