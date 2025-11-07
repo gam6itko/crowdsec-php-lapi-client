@@ -78,7 +78,7 @@ final class AlertsClientTest extends TestCase
      */
     public function testDelete(): void
     {
-        self::markTestSkipped("DELETE can be used only on the same machine than the local API.");
+        self::expectException(\RuntimeException::class);
         $this->alertsClient->delete([]);
     }
 
@@ -391,5 +391,23 @@ final class AlertsClientTest extends TestCase
             ['decision_type' => 'ban'],
             2,
         ];
+    }
+
+    /**
+     * @depends testPush
+     */
+    public function testGetById(array $idList): void
+    {
+        foreach ($idList as $id) {
+            self::assertIsNumeric($id);
+            $result = $this->alertsClient->getById(\intval($id));
+            self::assertIsArray($result);
+        }
+    }
+
+    public function testAlertInfoNotFound(): void
+    {
+        $result = $this->alertsClient->getById(PHP_INT_MAX);
+        self::assertNull($result);
     }
 }

@@ -5,19 +5,6 @@ namespace CrowdSec\LapiClient\Configuration\Alert;
 use CrowdSec\Common\Configuration\AbstractConfiguration;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
-/**
- * @psalm-type TSource = array{
- *     scope: string,
- *     value: string,
- *     ip?: string,
- *     range?: string,
- *     as_number?: string,
- *     as_name?: string,
- *     cn?: string,
- *     latitude?: float,
- *     longitude?: float
- * }
- */
 class Source extends AbstractConfiguration
 {
     /** @var list<string> The list of each configuration tree key */

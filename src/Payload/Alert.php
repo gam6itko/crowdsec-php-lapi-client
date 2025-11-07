@@ -11,18 +11,77 @@ use CrowdSec\LapiClient\Configuration\Alert\Source;
 use Symfony\Component\Config\Definition\Processor;
 
 /**
- * @psalm-import-type TAlert    from AlertConf
- * @psalm-import-type TEvent    from Event
- * @psalm-import-type TDecision from Decision
- * @psalm-import-type TSource   from Source
- * @psalm-import-type TMeta     from Meta
+ * Only for validation purposes.
  *
- * @psalm-suppress InvalidPropertyAssignmentValue
+ * @psalm-type TProps = array{
+ *     scenario: string,
+ *     scenario_hash: string,
+ *     scenario_version: string,
+ *     message: string,
+ *     events_count: int,
+ *     start_at: string,
+ *     stop_at: string,
+ *     capacity: int,
+ *     leakspeed: string,
+ *     simulated: bool,
+ *     remediation: bool
+ * }
+ *
+ * @psalm-type TSource = array{
+ *     scope: string,
+ *     value: string,
+ *     ip?: string,
+ *     range?: string,
+ *     as_number?: string,
+ *     as_name?: string,
+ *     cn?: string,
+ *     latitude?: float,
+ *     longitude?: float
+ * }
+ *
+ * @psalm-type TDecision = array{
+ *     origin: string,
+ *     type: string,
+ *     scope: string,
+ *     value: string,
+ *     duration: string,
+ *     until?: string,
+ *     scenario: string
+ * }
+ *
+ * @psalm-type TMeta = array{
+ *     key: string,
+ *     value: string
+ * }
+ *
+ * @psalm-type TEvent = array{
+ *     meta: list<TMeta>,
+ *     timestamp: string
+ * }
+ *
+ * @psalm-type TAlertFull = array{
+ *     scenario: string,
+ *     scenario_hash: string,
+ *     scenario_version: string,
+ *     message: string,
+ *     events_count: int,
+ *     start_at: string,
+ *     stop_at: string,
+ *     capacity: int,
+ *     leakspeed: string,
+ *     simulated: bool,
+ *     remediation: bool,
+ *     source: TSource,
+ *     events: list<TEvent>,
+ *     decisions: list<TDecision>,
+ *     meta: list<TMeta>,
+ *     labels: list<non-empty-string>
+ * }
  */
 class Alert implements \JsonSerializable
 {
     /**
-     * @var list<TAlert>
+     * @var list<TProps>
      */
     private $properties;
 
@@ -44,7 +103,7 @@ class Alert implements \JsonSerializable
     /**
      * @var list<TMeta>
      */
-    private $metaList = [];
+    private $meta = [];
 
     /**
      * @var list<string>
@@ -52,11 +111,11 @@ class Alert implements \JsonSerializable
     private $labels = [];
 
     /**
-     * @param TAlert $properties
+     * @param TProps $properties
      * @param TSource $source
      * @param list<TEvent> $events
      * @param list<TDecision> $decisions
-     * @param list<TMeta> $metaList
+     * @param list<TMeta> $meta
      * @param list<string> $labels
      */
     public function __construct(
@@ -64,7 +123,7 @@ class Alert implements \JsonSerializable
         array $source,
         array $events = [],
         array $decisions = [],
-        array $metaList = [],
+        array $meta = [],
         array $labels = []
     )
     {
@@ -73,10 +132,29 @@ class Alert implements \JsonSerializable
         $this->configureSource($processor, $source);
         $this->configureDecisions($processor, $decisions);
         $this->configureEvents($processor, $events);
-        $this->configureMetaList($processor, $metaList);
+        $this->configureMetaList($processor, $meta);
         $this->labels = \array_filter($labels);
     }
 
+    /**
+     * @param TAlertFull $data
+     * @return void
+     */
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            $data,
+            $data['source'] ?? [],
+            $data['events'] ?? [],
+            $data['decisions'] ?? [],
+            $data['meta'] ?? [],
+            $data['labels'] ?? []
+        );
+    }
+
+    /**
+     * @return TAlertFull
+     */
     public function toArray(): array
     {
         $result = $this->properties;
@@ -89,8 +167,8 @@ class Alert implements \JsonSerializable
         if (null !== $this->source) {
             $result['source'] = $this->source;
         }
-        if ([] !== $this->metaList) {
-            $result['meta'] = $this->metaList;
+        if ([] !== $this->meta) {
+            $result['meta'] = $this->meta;
         }
         if ([] !== $this->labels) {
             $result['labels'] = $this->labels;
@@ -138,7 +216,7 @@ class Alert implements \JsonSerializable
      */
     private function configureMetaList(Processor $processor, array $list): void
     {
-        $this->metaList = $this->handleList($processor, new Meta(), $list);
+        $this->meta = $this->handleList($processor, new Meta(), $list);
     }
 
     private function handleList(Processor $processor, AbstractConfiguration $param, array $list): array

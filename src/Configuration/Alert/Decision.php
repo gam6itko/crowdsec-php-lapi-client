@@ -5,17 +5,6 @@ namespace CrowdSec\LapiClient\Configuration\Alert;
 use CrowdSec\Common\Configuration\AbstractConfiguration;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
-/**
- * @psalm-type TDecision = array{
- *     origin: string,
- *     type: string,
- *     scope: string,
- *     value: string,
- *     duration: string,
- *     until?: string,
- *     scenario: string
- * }
- */
 class Decision extends AbstractConfiguration
 {
     /** @var list<string> The list of each configuration tree key */

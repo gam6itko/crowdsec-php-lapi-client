@@ -8,21 +8,6 @@ use CrowdSec\Common\Configuration\AbstractConfiguration;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
-/**
- * @psalm-type TAlert = array{
- *     scenario: string,
- *     scenario_hash: string,
- *     scenario_version: string,
- *     message: string,
- *     events_count: int,
- *     start_at: string,
- *     stop_at: string,
- *     capacity: int,
- *     leakspeed: string,
- *     simulated: bool,
- *     remediation: bool,
- * }
- */
 class Alert extends AbstractConfiguration
 {
     /** @var list<string> The list of each configuration tree key */

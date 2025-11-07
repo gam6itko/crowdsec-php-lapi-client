@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace CrowdSec\LapiClient;
 
 use CrowdSec\Common\Client\RequestHandler\RequestHandlerInterface;
-use CrowdSec\LapiClient\Configuration\Alert;
 use CrowdSec\LapiClient\Storage\TokenStorageInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * @psalm-import-type TAlert from \CrowdSec\LapiClient\Configuration\Alert
+ * @psalm-import-type TAlertFull from \CrowdSec\LapiClient\Payload\Alert
+ * @psalm-import-type TDecision from \CrowdSec\LapiClient\Payload\Alert
+ * @psalm-import-type TEvent from \CrowdSec\LapiClient\Payload\Alert
+ * @psalm-import-type TMeta from \CrowdSec\LapiClient\Payload\Alert
+ * @psalm-import-type TSource from \CrowdSec\LapiClient\Payload\Alert
  *
  * @psalm-type TSearchQuery = array{
  *     scope?: string,
@@ -38,6 +41,28 @@ use Psr\Log\LoggerInterface;
  *     has_active_decision?: boolean,
  *     alert_source?: string
  * }
+ *
+ * @psalm-type TStoredAlert = array{
+ *     capacity: int,
+ *     created_at: string,
+ *     decisions: list<TDecision>,
+ *     events: list<TEvent>,
+ *     events_count: int,
+ *     id: int,
+ *     labels: null|array<string, mixed>,
+ *     leakspeed: string,
+ *     machine_id: string,
+ *     message: string,
+ *     meta: list<TMeta>,
+ *     scenario: string,
+ *     scenario_hash: string,
+ *     scenario_version: string,
+ *     simulated: bool,
+ *     source: TSource,
+ *     start_at: string,
+ *     stop_at: string,
+ *     uuid: string
+ * }
  */
 class AlertsClient extends AbstractLapiClient
 {
@@ -58,7 +83,7 @@ class AlertsClient extends AbstractLapiClient
     }
 
     /**
-     * @param list<TAlert|Alert> $alerts
+     * @param list<TAlertFull> $alerts
      *
      * @return list<string>
      */
@@ -89,7 +114,7 @@ class AlertsClient extends AbstractLapiClient
      *     origin: Restrict results to this origin (ie. lists,CAPI,cscli).
      *
      * @param TSearchQuery $query
-     * @return array
+     * @return list<TStoredAlert>
      */
     public function search(array $query): array
     {
@@ -102,7 +127,7 @@ class AlertsClient extends AbstractLapiClient
     }
 
     /**
-     * Delete alerts by condition.
+     * Delete alerts by condition. Can be used only on the same machine than the local API.
      *
      * @param TDeleteQuery $query
      */
@@ -114,6 +139,25 @@ class AlertsClient extends AbstractLapiClient
             Constants::ALERTS,
             $query
         );
+    }
+
+    /**
+     * @param positive-int $id
+     * @return TStoredAlert
+     */
+    public function getById(int $id): ?array
+    {
+        $this->login();
+        $result = $this->manageRequest(
+            'GET',
+            \sprintf('%s/%d', Constants::ALERTS, $id)
+        );
+        // workaround for mutes 404 status.
+        if (empty($result['id'])) {
+            \assert($result['message'] === 'object not found');
+            return null;
+        }
+        return $result;
     }
 
     private function login(): void

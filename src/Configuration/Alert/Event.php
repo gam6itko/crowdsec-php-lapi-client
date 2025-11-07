@@ -5,14 +5,6 @@ namespace CrowdSec\LapiClient\Configuration\Alert;
 use CrowdSec\Common\Configuration\AbstractConfiguration;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
-/**
- * @psalm-import-type TMeta from \CrowdSec\LapiClient\Configuration\Alert\Meta
- *
- * @psalm-type TEvent = array{
- *     meta: list<TMeta>,
- *     timestamp: string
- * }
- */
 class Event extends AbstractConfiguration
 {
     /** @var list<string> The list of each configuration tree key */
