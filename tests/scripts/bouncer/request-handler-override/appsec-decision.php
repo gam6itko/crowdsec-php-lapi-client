@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 use CrowdSec\Common\Client\RequestHandler\FileGetContents;
 use CrowdSec\Common\Logger\ConsoleLog;
-use CrowdSec\LapiClient\BouncerClient;
+use CrowdSec\LapiClient\Bouncer;
 
 $apiKey = $argv[1] ?? false;
 $headers = isset($argv[2]) ? json_decode($argv[2], true) : [];

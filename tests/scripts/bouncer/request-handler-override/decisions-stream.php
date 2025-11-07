@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 use CrowdSec\Common\Client\RequestHandler\FileGetContents;
-use CrowdSec\LapiClient\BouncerClient;
+use CrowdSec\LapiClient\Bouncer;
 use CrowdSec\LapiClient\Constants;
 
 $startup = isset($argv[1]) ? (bool) $argv[1] : false;
@@ -32,7 +32,7 @@ $apiKeyConfigs = [
 ];
 echo \PHP_EOL . 'Instantiate custom request handler ...' . \PHP_EOL;
 $customRequestHandler = new FileGetContents();
-$client = new BouncerClient($apiKeyConfigs, $customRequestHandler);
+$client = new Bouncer($apiKeyConfigs, $customRequestHandler);
 echo 'Bouncer instantiated' . \PHP_EOL;
 
 echo 'Calling ' . $client->getConfig('api_url') . ' for decisions stream ...' . \PHP_EOL;

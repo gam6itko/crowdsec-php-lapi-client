@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use CrowdSec\Common\Logger\ConsoleLog;
-use CrowdSec\LapiClient\BouncerClient;
+use CrowdSec\LapiClient\Bouncer;
 
 $apiKey = $argv[1] ?? false;
 $headers = isset($argv[2]) ? json_decode($argv[2], true) : [];
@@ -31,7 +31,7 @@ $configs = [
     'api_key' => $apiKey,
 ];
 $logger = new ConsoleLog();
-$client = new BouncerClient($configs, null, $logger);
+$client = new Bouncer($configs, null, $logger);
 echo 'Bouncer instantiated' . \PHP_EOL;
 
 $headers += ['X-Crowdsec-Appsec-Api-Key' => $apiKey];

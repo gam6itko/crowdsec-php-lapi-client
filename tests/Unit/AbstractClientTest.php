@@ -17,28 +17,28 @@ namespace CrowdSec\LapiClient\Tests\Unit;
 
 use CrowdSec\Common\Client\ClientException;
 use CrowdSec\Common\Client\HttpMessage\Response;
-use CrowdSec\LapiClient\BouncerClient;
+use CrowdSec\LapiClient\Bouncer;
 use CrowdSec\LapiClient\Constants;
 use CrowdSec\LapiClient\Tests\MockedData;
 use CrowdSec\LapiClient\Tests\PHPUnitUtil;
 
 /**
  * @uses \CrowdSec\LapiClient\Configuration::getConfigTreeBuilder
- * @uses \CrowdSec\LapiClient\BouncerClient::formatUserAgent
+ * @uses \CrowdSec\LapiClient\Bouncer::formatUserAgent
  * @uses \CrowdSec\LapiClient\Configuration::addConnectionNodes
  * @uses \CrowdSec\LapiClient\Configuration::validate
  * @uses \CrowdSec\LapiClient\Configuration::addAppSecNodes
  *
- * @covers \CrowdSec\LapiClient\BouncerClient::__construct
- * @covers \CrowdSec\LapiClient\BouncerClient::configure
- * @covers \CrowdSec\LapiClient\BouncerClient::cleanHeadersForLog
- * @covers \CrowdSec\LapiClient\BouncerClient::cleanRawBodyForLog
+ * @covers \CrowdSec\LapiClient\Bouncer::__construct
+ * @covers \CrowdSec\LapiClient\Bouncer::configure
+ * @covers \CrowdSec\LapiClient\Bouncer::cleanHeadersForLog
+ * @covers \CrowdSec\LapiClient\Bouncer::cleanRawBodyForLog
  */
 final class AbstractClientTest extends AbstractClient
 {
     public function testClientInit()
     {
-        $client = new BouncerClient($this->configs);
+        $client = new Bouncer($this->configs);
 
         $url = $client->getUrl();
         $this->assertEquals(
@@ -59,7 +59,7 @@ final class AbstractClientTest extends AbstractClient
             'Request handler must be curl by default'
         );
 
-        $client = new BouncerClient(array_merge($this->configs, ['api_url' => 'http://test']));
+        $client = new Bouncer(array_merge($this->configs, ['api_url' => 'http://test']));
         $url = $client->getUrl();
         $this->assertEquals(
             'http://test/',
@@ -74,7 +74,7 @@ final class AbstractClientTest extends AbstractClient
 
         $error = false;
         try {
-            new BouncerClient($this->configs, new \DateTime());
+            new Bouncer($this->configs, new \DateTime());
         } catch (\TypeError $e) {
             $error = $e->getMessage();
         }
@@ -90,7 +90,7 @@ final class AbstractClientTest extends AbstractClient
     public function testPrivateOrProtectedMethods()
     {
         // cleanHeadersForLog
-        $client = new BouncerClient($this->configs);
+        $client = new Bouncer($this->configs);
         $headers = ['test' => 'test'];
         $cleanedHeaders = PHPUnitUtil::callMethod(
             $client,

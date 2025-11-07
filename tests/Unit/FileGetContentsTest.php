@@ -17,22 +17,22 @@ namespace CrowdSec\LapiClient\Tests\Unit;
  * @license   MIT License
  */
 
-use CrowdSec\LapiClient\BouncerClient;
+use CrowdSec\LapiClient\Bouncer;
 use CrowdSec\LapiClient\Tests\MockedData;
 use CrowdSec\LapiClient\TimeoutException;
 
 /**
  * @uses \CrowdSec\LapiClient\Configuration::getConfigTreeBuilder
- * @uses \CrowdSec\LapiClient\BouncerClient::__construct
- * @uses \CrowdSec\LapiClient\BouncerClient::configure
- * @uses \CrowdSec\LapiClient\BouncerClient::formatUserAgent
- * @uses \CrowdSec\LapiClient\BouncerClient::manageRequest
+ * @uses \CrowdSec\LapiClient\Bouncer::__construct
+ * @uses \CrowdSec\LapiClient\Bouncer::configure
+ * @uses \CrowdSec\LapiClient\Bouncer::formatUserAgent
+ * @uses \CrowdSec\LapiClient\Bouncer::manageRequest
  * @uses \CrowdSec\LapiClient\Configuration::addConnectionNodes
  * @uses \CrowdSec\LapiClient\Configuration::validate
  * @uses \CrowdSec\LapiClient\Configuration::addAppSecNodes
  *
- * @covers \CrowdSec\LapiClient\BouncerClient::getStreamDecisions
- * @covers \CrowdSec\LapiClient\BouncerClient::getFilteredDecisions
+ * @covers \CrowdSec\LapiClient\Bouncer::getStreamDecisions
+ * @covers \CrowdSec\LapiClient\Bouncer::getFilteredDecisions
  */
 final class FileGetContentsTest extends AbstractClient
 {
@@ -49,7 +49,7 @@ final class FileGetContentsTest extends AbstractClient
             )
         );
 
-        $client = new BouncerClient($this->configs, $mockFGCRequest);
+        $client = new Bouncer($this->configs, $mockFGCRequest);
         $decisionsResponse = $client->getStreamDecisions(true);
 
         $this->assertEquals(
@@ -72,7 +72,7 @@ final class FileGetContentsTest extends AbstractClient
             )
         );
 
-        $client = new BouncerClient($this->configs, $mockFGCRequest);
+        $client = new Bouncer($this->configs, $mockFGCRequest);
         $decisionsResponse = $client->getFilteredDecisions();
 
         $this->assertEquals(
@@ -95,7 +95,7 @@ final class FileGetContentsTest extends AbstractClient
                 return ['response' => false];
             });
 
-        $client = new BouncerClient($this->configs, $mockFGCRequest);
+        $client = new Bouncer($this->configs, $mockFGCRequest);
         $error = false;
         $message = '';
         try {
