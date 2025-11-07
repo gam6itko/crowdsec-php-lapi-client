@@ -45,11 +45,6 @@ class TestWatcherClient extends AbstractClient
         parent::__construct($this->configs);
     }
 
-    public function getWatcher(): WatcherClient
-    {
-        return $this->watcher;
-    }
-
     /**
      * Make a request.
      *
