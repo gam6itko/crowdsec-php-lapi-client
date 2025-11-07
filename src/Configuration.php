@@ -110,7 +110,7 @@ class Configuration extends AbstractConfiguration
      *
      * @throws \InvalidArgumentException
      */
-    private function addAppSecNodes($rootNode)
+    private function addAppSecNodes($rootNode): void
     {
         $rootNode->children()
             ->scalarNode('appsec_url')->cannotBeEmpty()->defaultValue(Constants::DEFAULT_APPSEC_URL)->end()
@@ -128,7 +128,7 @@ class Configuration extends AbstractConfiguration
      *
      * @throws \InvalidArgumentException
      */
-    private function addConnectionNodes($rootNode)
+    private function addConnectionNodes($rootNode): void
     {
         $rootNode->children()
             ->scalarNode('api_url')->cannotBeEmpty()->defaultValue(Constants::DEFAULT_LAPI_URL)->end()
