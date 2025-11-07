@@ -13,6 +13,8 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 /**
+ * @note You must delete all alerts manually before run this TestCase. Command `cscli alerts delete --all`.
+ *
  * @coversDefaultClass \CrowdSec\LapiClient\AlertsClient
  */
 final class AlertsClientTest extends TestCase
@@ -69,6 +71,15 @@ final class AlertsClientTest extends TestCase
 
         $tokenStorage = new TokenStorage($this->watcherClient->getWatcher(), new ArrayAdapter());
         $this->alertsClient = new AlertsClient($this->configs, $tokenStorage);
+    }
+
+    /**
+     * @covers ::delete
+     */
+    public function testDelete(): void
+    {
+        self::markTestSkipped("DELETE can be used only on the same machine than the local API.");
+        $this->alertsClient->delete([]);
     }
 
     /**
