@@ -10,12 +10,12 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\Definition\Processor;
 
 /**
- * @psalm-import-type TClientConfig from Configuration
+ * @psalm-import-type TBouncerConfig from Configuration
  */
 abstract class AbstractLapiClient extends AbstractClient
 {
     /**
-     * @var TClientConfig
+     * @var TBouncerConfig
      */
     protected $configs;
     /**
