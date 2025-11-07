@@ -9,6 +9,7 @@ use CrowdSec\LapiClient\Constants;
 use CrowdSec\LapiClient\Payload\Alert;
 use CrowdSec\LapiClient\Storage\TokenStorage;
 use CrowdSec\LapiClient\Tests\Constants as TestConstants;
+use CrowdSec\LapiClient\WatcherClient;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
@@ -29,11 +30,6 @@ final class AlertsClientTest extends TestCase
      * @var string
      */
     protected $useTls;
-
-    /**
-     * @var TestWatcherClient
-     */
-    protected $watcherClient;
 
     /**
      * @var AlertsClient
@@ -64,12 +60,9 @@ final class AlertsClientTest extends TestCase
         }
 
         $this->configs = $bouncerConfigs;
-        $this->watcherClient = new TestWatcherClient($this->configs);
-        // Delete all decisions
-        $this->watcherClient->deleteAllDecisions();
-        usleep(200000); // 200ms
 
-        $tokenStorage = new TokenStorage($this->watcherClient->getWatcher(), new ArrayAdapter());
+        $watcher = new WatcherClient($this->configs);
+        $tokenStorage = new TokenStorage($watcher, new ArrayAdapter());
         $this->alertsClient = new AlertsClient($this->configs, $tokenStorage);
     }
 

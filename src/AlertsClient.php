@@ -76,8 +76,7 @@ class AlertsClient extends AbstractLapiClient
         TokenStorageInterface $tokenStorage,
         ?RequestHandlerInterface $requestHandler = null,
         ?LoggerInterface $logger = null
-    )
-    {
+    ) {
         $this->tokenStorage = $tokenStorage;
         parent::__construct($configs, $requestHandler, $logger);
     }

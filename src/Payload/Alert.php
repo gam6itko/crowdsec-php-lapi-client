@@ -125,8 +125,7 @@ class Alert implements \JsonSerializable
         array $decisions = [],
         array $meta = [],
         array $labels = []
-    )
-    {
+    ) {
         $processor = new Processor();
         $this->configureProperties($processor, $properties);
         $this->configureSource($processor, $source);
@@ -179,7 +178,10 @@ class Alert implements \JsonSerializable
     private function configureProperties(Processor $processor, array $properties): void
     {
         $configuration = new AlertConf();
-        $this->properties = $processor->processConfiguration($configuration, [$configuration->cleanConfigs($properties)]);
+        $this->properties = $processor->processConfiguration(
+            $configuration,
+            [$configuration->cleanConfigs($properties)]
+        );
     }
 
     /**
