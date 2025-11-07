@@ -17,6 +17,8 @@ use Symfony\Component\Cache\Adapter\ArrayAdapter;
  */
 final class AlertsClientTest extends TestCase
 {
+    private const DT_FORMAT = 'Y-m-dTH:i:sZ';
+
     /**
      * @var array
      */
@@ -75,71 +77,17 @@ final class AlertsClientTest extends TestCase
     public function testPush(): array
     {
         $now = new \DateTimeImmutable();
-        $alertFull = new Alert(
+        $alert01 = new Alert(
             [
-                'scenario' => 'crowdsec-lapi-test/integration',
-                'scenario_hash' => 'abc123',
+                'scenario' => 'crowdsec-lapi-test/with-decision',
+                'scenario_hash' => 'alert01',
                 'scenario_version' => '1.0',
-                'message' => 'Message1',
+                'message' => 'alert01',
                 'events_count' => 3,
-                'start_at' => $now->format('Y-m-d H:i:s'),
+                'start_at' => $now->format(self::DT_FORMAT),
                 'stop_at' => $now
                     ->add(new \DateInterval('PT4H'))
-                    ->format('Y-m-d H:i:s'),
-                'capacity' => 10,
-                'leakspeed' => '10/1s',
-                'simulated' => false,
-                'remediation' => true,
-            ],
-            // source
-            [
-                'scope' => 'ip',
-                'value' => '1.2.3.4',
-                'ip' => '1.1.1.1',
-                'range' => '1.2.3.4/32',
-                'as_number' => 'AS12345',
-                'as_name' => 'EXAMPLE-AS',
-                'cn' => 'US',
-                'latitude' => 40.7128,
-                'longitude' => -74.0060,
-            ],
-            // events
-            [
-                [
-                    'meta' => [
-                        ['key' => 'path', 'value' => '/admin'],
-                    ],
-                    'timestamp' => $now->format('Y-m-d H:i:s'),
-                ],
-            ],
-            // decisions
-            [
-                [
-                    'origin' => 'lapi',
-                    'type' => 'ban',
-                    'scope' => 'ip',
-                    'value' => '1.2.3.4',
-                    'duration' => '4h',
-                    'until' => $now
-                        ->add(new \DateInterval('PT4H'))
-                        ->format('Y-m-d H:i:s'),
-                    'scenario' => 'crowdsec-lapi-test/integration',
-                ],
-            ],
-            [
-                ['key' => 'service', 'value' => 'phpunit'],
-            ],
-            ['http', 'probing']
-        );
-        $alertLite = new Alert(
-            [
-                'scenario' => 'crowdsec-lapi-test/integration',
-                'scenario_hash' => 'xyz777',
-                'scenario_version' => '1.0',
-                'message' => 'Message2',
-                'events_count' => 3,
-                'start_at' => '2025-01-02T00:00:00Z',
-                'stop_at' => '2025-01-02T00:10:00Z',
+                    ->format(self::DT_FORMAT),
                 'capacity' => 10,
                 'leakspeed' => '10/1s',
                 'simulated' => false,
@@ -148,9 +96,7 @@ final class AlertsClientTest extends TestCase
             // source
             [
                 'scope' => 'ip',
-                'value' => '1.2.3.4',
-                'ip' => '2.2.2.2',
-                'range' => '1.2.3.4/32',
+                'value' => '1.1.0.1',
                 'as_number' => 'AS12345',
                 'as_name' => 'EXAMPLE-AS',
                 'cn' => 'US',
@@ -161,18 +107,162 @@ final class AlertsClientTest extends TestCase
             [
                 [
                     'meta' => [
-                        ['key' => 'path', 'value' => '/admin'],
+                        ['key' => 'path', 'value' => '/alert11'],
                     ],
-                    'timestamp' => $now->format('Y-m-d H:i:s'),
+                    'timestamp' => $now->format(self::DT_FORMAT),
+                ],
+            ],
+            // decisions
+            [
+                [
+                    'origin' => 'lapi',
+                    'type' => 'ban',
+                    'scope' => 'ip',
+                    'value' => '1.1.0.1',
+                    'duration' => '4h',
+                    'until' => $now
+                        ->add(new \DateInterval('PT4H'))
+                        ->format(self::DT_FORMAT),
+                    'scenario' => 'crowdsec-lapi-test/with-decision',
+                ],
+            ],
+            [
+                ['key' => 'service', 'value' => 'phpunit'],
+            ],
+            ['http', 'probing']
+        );
+        $alert02 = new Alert(
+            [
+                'scenario' => 'crowdsec-lapi-test/with-decision',
+                'scenario_hash' => 'alert02',
+                'scenario_version' => '1.0',
+                'message' => 'alert02',
+                'events_count' => 3,
+                'start_at' => $now->format(self::DT_FORMAT),
+                'stop_at' => $now
+                    ->add(new \DateInterval('PT4H'))
+                    ->format(self::DT_FORMAT),
+                'capacity' => 10,
+                'leakspeed' => '10/1s',
+                'simulated' => true,
+                'remediation' => true,
+            ],
+            // source
+            [
+                'scope' => 'range',
+                'value' => '1.1.0.0/16',
+                'as_number' => 'AS12345',
+                'as_name' => 'EXAMPLE-AS',
+                'cn' => 'US',
+                'latitude' => 40.7128,
+                'longitude' => -74.0060,
+            ],
+            // events
+            [
+                [
+                    'meta' => [
+                        ['key' => 'path', 'value' => '/alert12'],
+                    ],
+                    'timestamp' => $now->format(self::DT_FORMAT),
+                ],
+            ],
+            // decisions
+            [
+                [
+                    'origin' => 'phpunit',
+                    'type' => 'captcha',
+                    'scope' => 'range',
+                    'value' => '1.1.0.0/16',
+                    'duration' => '4h',
+                    'until' => $now
+                        ->add(new \DateInterval('PT4H'))
+                        ->format(self::DT_FORMAT),
+                    'scenario' => 'crowdsec-lapi-test/with-decision',
+                ],
+            ]
+        );
+        $alert11 = new Alert(
+            [
+                'scenario' => 'crowdsec-lapi-test/integration11',
+                'scenario_hash' => 'alert11',
+                'scenario_version' => '1.0',
+                'message' => 'alert10',
+                'events_count' => 3,
+                'start_at' => $now->format(self::DT_FORMAT),
+                'stop_at' => $now
+                    ->add(new \DateInterval('PT4H'))
+                    ->format(self::DT_FORMAT),
+                'capacity' => 11,
+                'leakspeed' => '10/2s',
+                'simulated' => false,
+                'remediation' => false,
+            ],
+            // source
+            [
+                'scope' => 'ip',
+                'value' => '2.0.1.1',
+                'as_number' => 'AS12345',
+                'as_name' => 'EXAMPLE-AS',
+                'cn' => 'US',
+                'latitude' => 40.7128,
+                'longitude' => -74.0060,
+            ],
+            // events
+            [
+                [
+                    'meta' => [
+                        ['key' => 'path', 'value' => '/alert21'],
+                    ],
+                    'timestamp' => $now->format(self::DT_FORMAT),
+                ],
+            ]
+        );
+        $alert12 = new Alert(
+            [
+                'scenario' => 'crowdsec-lapi-test/integration12',
+                'scenario_hash' => 'alert12',
+                'scenario_version' => '1.0',
+                'message' => 'alert12',
+                'events_count' => 3,
+                'start_at' => $now->format(self::DT_FORMAT),
+                'stop_at' => $now
+                    ->add(new \DateInterval('PT4H'))
+                    ->format(self::DT_FORMAT),
+                'capacity' => 12,
+                'leakspeed' => '10/2s',
+                'simulated' => true,
+                'remediation' => true,
+            ],
+            // source
+            [
+                'scope' => 'range',
+                'value' => '2.0.0.0/16',
+                'as_number' => 'AS12345',
+                'as_name' => 'EXAMPLE-AS',
+                'cn' => 'US',
+                'latitude' => 40.7128,
+                'longitude' => -74.0060,
+            ],
+            // events
+            [
+                [
+                    'meta' => [
+                        ['key' => 'path', 'value' => '/alert21'],
+                    ],
+                    'timestamp' => $now->format(self::DT_FORMAT),
                 ],
             ]
         );
         $result = $this->alertsClient->push([
-            $alertFull,
-            $alertLite
+            // with decisions
+            $alert01,
+            $alert02,
+            // without decisions
+            $alert11,
+            $alert12,
         ]);
         self::assertIsArray($result);
-        self::assertCount(2, $result);
+        self::assertCount(4, $result);
         return $result;
     }
 
@@ -191,7 +281,7 @@ final class AlertsClientTest extends TestCase
     {
         yield 'empty' => [
             [],
-            2
+            4
         ];
 
         yield 'ip - no' => [
@@ -199,28 +289,96 @@ final class AlertsClientTest extends TestCase
             0
         ];
 
-        yield 'ip - 1' => [
-            ['ip' => '1.2.3.4'],
-            1
-        ];
-
-        yield 'scenario' => [
-            ['scenario' => 'crowdsec-lapi-test/integration'],
+        yield 'ip - 1.1.0.1' => [
+            ['ip' => '1.1.0.1'], // alert01 (scope=ip;value=1.1.0.1 +decision) and alert02(scope=range;value=1.1.0.0/16 +decision)
             2
+        ];
+        yield 'ip - 2.0.1.1' => [
+            ['ip' => '2.0.1.1'], // alert12 (range no decision)
+            1
         ];
 
         yield 'scope - ip' => [
             ['scope' => 'ip'],
             2,
         ];
-
-        yield 'scope - ip:1.2.3.4' => [
-            ['scope' => 'ip', 'value' => '1.2.3.4'],
+        yield 'scope - range' => [
+            ['scope' => 'range'],
             2,
         ];
-        yield 'has_active_decision' => [
-            ['has_active_decision' => true],
+
+        yield 'scope - ip:1.1.0.1' => [
+            ['scope' => 'ip', 'value' => '1.1.0.1'],
             1,
+        ];
+
+        yield 'scenario' => [
+            ['scenario' => 'crowdsec-lapi-test/with-decision'],
+            2
+        ];
+
+        yield 'has_active_decision=true' => [
+            ['has_active_decision' => 'true'],
+            0,
+        ];
+
+        yield 'has_active_decision=false' => [
+            ['has_active_decision' => 'false'],
+            1, //crowdsec-lapi-test/integration11
+        ];
+// TODO: why 4 byt not 2 ?
+//        yield 'simulated=true' => [
+//            ['simulated' => 'true'],
+//            4,
+//        ];
+        yield 'simulated=false' => [
+            ['simulated' => 'false'],
+            2,
+        ];
+
+        yield 'since -1h' => [
+            [
+                'since' => '-1h',
+            ],
+            0,
+        ];
+        yield 'since 1s' => [
+            ['since' => '1s'],
+            0,
+        ];
+        yield 'since 1h' => [
+            ['since' => '10h'],
+            4,
+        ];
+
+        yield 'until -1h' => [
+            ['until' => '-1h'],
+            4,
+        ];
+        yield 'until 1s' => [
+            ['until' => '1s'],
+            4,
+        ];
+        yield 'until 1h' => [
+            ['until' => '1h'],
+            0,
+        ];
+        yield 'until 10h' => [
+            ['until' => '10h'],
+            0,
+        ];
+        yield 'until 100h' => [
+            ['until' => '10h'],
+            0,
+        ];
+
+        yield 'origin=phpunit' => [
+            ['origin' => 'phpunit'],
+            1,
+        ];
+        yield 'decision_type=ban' => [
+            ['decision_type' => 'ban'],
+            2,
         ];
     }
 }

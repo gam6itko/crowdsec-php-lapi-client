@@ -73,6 +73,21 @@ class AlertsClient extends AbstractLapiClient
     }
 
     /**
+     * Search for alerts.
+     *
+     *     scope - Show alerts for this scope.
+     *     value - Show alerts for this value (used with scope).
+     *     scenario - Show alerts for this scenario.
+     *     ip - IP to search for (shorthand for scope=ip&value=).
+     *     range - Range to search for (shorthand for scope=range&value=).
+     *     since - Search alerts newer than delay (format must be compatible with time.ParseDuration).
+     *     until - Search alerts older than delay (format must be compatible with time.ParseDuration).
+     *     simulated - If set to true, decisions in simulation mode will be returned as well.
+     *     has_active_decision: Only return alerts with decisions not expired yet.
+     *     decision_type: Restrict results to alerts with decisions matching given type.
+     *     limit: Number of alerts to return.
+     *     origin: Restrict results to this origin (ie. lists,CAPI,cscli).
+     *
      * @param TSearchQuery $query
      * @return array
      */
